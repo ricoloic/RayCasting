@@ -1,13 +1,11 @@
 class ButtonContainer {
   int x;
   int y;
-  int spacing;
   ArrayList<Button> buttons;
 
-  ButtonContainer(ArrayList<Button> buttons,int x, int y, int spacing) {
+  ButtonContainer(ArrayList<Button> buttons,int x, int y) {
     this.x = x;
     this.y =  y;
-    this.spacing = spacing;
     this.buttons = new ArrayList<Button>();
     for (int i = 0; i < buttons.size(); i++) {
       Button button = buttons.get(i);
@@ -17,10 +15,9 @@ class ButtonContainer {
     }
   }
 
-  ButtonContainer(int x, int y, int spacing) {
+  ButtonContainer(int x, int y) {
     this.x = x;
     this.y =  y;
-    this.spacing = spacing; 
     this.buttons = new ArrayList<Button>();
   }
   
@@ -31,7 +28,7 @@ class ButtonContainer {
     this.buttons.add(button);
   }
 
-  void show(int colliderX, int colliderY) {
+  void show() {
     this.buttons.forEach((button) -> button.show());
   }
 

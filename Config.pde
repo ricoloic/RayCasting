@@ -4,7 +4,7 @@ class Config {
   Boolean autoMove = false;
   Boolean snapNodes = false;
   Boolean casting = false;
-  Boolean moving = false;
+  Boolean clicking = false;
   Boolean background = true;
   Float xoff = (float) 0;
   Float yoff = (float) 11111;

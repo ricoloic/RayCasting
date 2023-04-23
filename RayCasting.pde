@@ -1,52 +1,39 @@
 BoxBoundary canvasBoundary;
 ArrayList<Boundary> boundaries;
-ButtonContainer buttonContainer;
-Caster caster;
+ButtonContainer buttonContainer1;
+ButtonContainer buttonContainer2;
+CasterContainer caster;
 Config config;
-
-  //PVector centerPosition;
-  //Boolean editing = false;
-  //Boolean autoMove = false;
-  //Boolean snapNodes = false;
-  //Boolean casting = true;
-  //Boolean moving = false;
-  //Boolean background = true;
-  //Float xoff = (float) 0;
-  //Float yoff = (float) 11111;
 
 void setup() {
   // Define the canvas width and height
-  size(1900, 1000);
+  //size(1900, 1000);
   fullScreen();
   noiseDetail(2, 0.7);
 
   ArrayList<Button> buttons = new ArrayList<Button>();
-
   buttons.add(new Button("Edit Boundaries", true, () -> { config.editing = !config.editing; }));
   buttons.add(new Button("Automatic Movement", true, () -> { config.autoMove = !config.autoMove; }));
   buttons.add(new Button("Snap Node On Edit", true, () -> { config.snapNodes = !config.snapNodes; }));
-  buttons.add(new Button("Show Casting", true, () -> { config.casting = !config.casting; }));
-  buttons.add(new Button("+2 Boundary", false, () -> { boundaries.add(new Boundary(2)); }));
-  buttons.add(new Button("+3", false, () -> { boundaries.add(new Boundary(3)); }));
-  buttons.add(new Button("+4", false, () -> { boundaries.add(new Boundary(4)); }));
-  buttons.add(new Button("+5", false, () -> { boundaries.add(new Boundary(5)); }));
+  buttons.add(new Button("Show Rays", true, () -> { config.casting = !config.casting; }));
+  buttons.add(new Button("Show Cast Background", true, () -> { config.background = !config.background; }));
+  buttonContainer1 = new ButtonContainer(buttons, 30, 30);
 
-  buttonContainer = new ButtonContainer(buttons, 30, 30, 50);
+  ArrayList<Button> addButtons = new ArrayList<Button>();
+  addButtons.add(new Button("+2 Boundary", false, () -> { boundaries.add(new Boundary(2)); }));
+  addButtons.add(new Button("+3", false, () -> { boundaries.add(new Boundary(3)); }));
+  addButtons.add(new Button("+4", false, () -> { boundaries.add(new Boundary(4)); }));
+  addButtons.add(new Button("+5", false, () -> { boundaries.add(new Boundary(5)); }));
+  buttonContainer2 = new ButtonContainer(addButtons, 30, 30 + 55);
+
   config = new Config(width / 2, height / 2);
-  caster = new Caster(config.centerPosition);
-  canvasBoundary = new BoxBoundary(
-    new Point(0, 0),
-    new Point(width, 0),
-    new Point(width, height),
-    new Point(0, height),
-    255,
-    0
-    );
+  caster = new CasterContainer(config.centerPosition);
+  canvasBoundary = new BoxBoundary(new Point(0, 0), new Point(width, 0), new Point(width, height), new Point(0, height), 255, 0);
   boundaries = new ArrayList<Boundary>();
   boundaries.add(new Boundary(6));
   for (String font : PFont.list())
     println(font);
-  PFont myFont = createFont("Monospaced.plain", 32);
+  PFont myFont = createFont("Monospaced", 32);
   textFont(myFont);
 }
 
@@ -63,31 +50,31 @@ void draw() {
 
   ArrayList<LineBoundary> tempArray = new ArrayList<LineBoundary>();
 
-  canvasBoundary.getLines().forEach((line) -> tempArray.add(line));
-
+  canvasBoundary.getLines().forEach((line) ->
+    tempArray.add(line));
   boundaries.forEach((boundary) ->
     boundary.lines.forEach((line) ->
-    tempArray.add(line)));
-
-  buttonContainer.buttons.forEach((boundary) ->
+      tempArray.add(line)));
+  buttonContainer1.buttons.forEach((boundary) ->
+    boundary.lines.forEach((line) ->
+      tempArray.add(line)));
+  buttonContainer2.buttons.forEach((boundary) ->
     boundary.lines.forEach((line) ->
       tempArray.add(line)));
 
-  canvasBoundary.show(false);
-  Boolean collides = false;
-
-
-  if (!config.moving) {
+  if (!config.clicking) {
     if (config.background) caster.castBackground(tempArray);
-    if (config.casting && !collides) caster.castRays(tempArray);
+    if (config.casting) caster.castRays(tempArray);
   }
 
-  buttonContainer.show(mouseX, mouseX);
-  boundaries.forEach((b) -> b.show(config.editing));
+  buttonContainer1.show();
+  buttonContainer2.show();
+  boundaries.forEach((b) ->
+    b.show(config.editing));
 }
 
 void mouseReleased() {
-  config.moving = false;
+  config.clicking = false;
   for (Boundary b : boundaries) {
     for (Point pt : b.points) {
       if (pt.getMoving()) {
@@ -98,7 +85,7 @@ void mouseReleased() {
 }
 
 void mousePressed() {
-  config.moving = true;
+  config.clicking = true;
   for (int i = boundaries.size(); i > 0; i--) {
     for (int j = boundaries.get(i - 1).points.size(); j > 0; j--) {
       if (boundaries.get(i - 1).points.get(j - 1).hovering()) {
@@ -108,8 +95,12 @@ void mousePressed() {
     }
   }
 
-  for (Button button : buttonContainer.buttons)
-    if (button.collides(new PVector(mouseX, mouseY))) button.onClick();
+  PVector mouse = new PVector(mouseX, mouseY);
+  for (Button button : buttonContainer1.buttons)
+    if (button.collides(mouse)) button.onClick();
+
+  for (Button button : buttonContainer2.buttons)
+    if (button.collides(mouse)) button.onClick();
 }
 
 void keyPressed() {

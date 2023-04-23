@@ -74,6 +74,12 @@ class Caster {
     foundIntersections.forEach((pa) -> vertex(pa.point.x, pa.point.y));
     endShape();
   }
+  
+  void castPoint() {
+    stroke(255, 0, 0);
+    strokeWeight(10);
+    point(this.position.x, this.position.y);
+  }
 
   private ArrayList<PointAngle> findIntersections(ArrayList<Ray> rays, ArrayList<LineBoundary> lines) {
     ArrayList<PointAngle> foundIntersections = new ArrayList<PointAngle>();
