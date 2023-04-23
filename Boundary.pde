@@ -1,7 +1,7 @@
 class Boundary {
   int pointAmount = 2;
   int thickness = 2;
-  color collor = 255;
+  color collor = #FF6000;
   int offset = 0;
 
   ArrayList<Point> points;
@@ -87,10 +87,18 @@ class Boundary {
   }
 
   void show(Boolean editing) {
-    this.lines.forEach((line) -> line.show(this.collor, editing, this.thickness));
+    fill(this.collor, 200);
+    beginShape();
+    this.points.forEach((point) -> vertex(point.x, point.y));
+    endShape(CLOSE);
+    this.lines.forEach((line) -> line.show(255, editing, this.thickness));
   }
 
   void show() {
-    this.lines.forEach((line) -> line.show(this.collor, false, this.thickness));
+    fill(this.collor, 200);
+    beginShape();
+    this.points.forEach((point) -> vertex(point.x, point.y));
+    endShape(CLOSE);
+    this.lines.forEach((line) -> line.show(255, false, this.thickness));
   }
 }

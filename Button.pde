@@ -21,10 +21,8 @@ class Button {
   ArrayList<LineBoundary> lines;
 
   private ClickHandler clickHandler;
-  Boolean withActiveCollor;
 
-  Button(String content, Boolean withActiveCollor, ClickHandler clickHandler) {
-    this.withActiveCollor = withActiveCollor;
+  Button(String content, ClickHandler clickHandler) {
     this.active = false;
     this.clickHandler = clickHandler;
     PVector position = new PVector(0, 0);
@@ -48,8 +46,7 @@ class Button {
     }
   }
 
-  Button(String content, PVector position, Boolean withActiveCollor, ClickHandler clickHandler) {
-    this.withActiveCollor = withActiveCollor;
+  Button(String content, PVector position, ClickHandler clickHandler) {
     this.active = false;
     this.clickHandler = clickHandler;
     this.content = content;
@@ -76,10 +73,8 @@ class Button {
     this.lines.forEach((line) ->
       line.show(this.collor, false, this.thickness));
 
-    if (this.withActiveCollor && this.active) {
-      fill(color(DEFAULT_BUTTON_BACKGROUND_COLLOR, 200));
-      rect(this.points.get(0).x, this.points.get(1).y, this.w, BUTTON_HEIGHT);
-    }
+    fill(color(DEFAULT_BUTTON_BACKGROUND_COLLOR, 200));
+    rect(this.points.get(0).x, this.points.get(1).y, this.w, BUTTON_HEIGHT);
 
     fill(#FFFFFF);
     text(content, this.points.get(0).x + 15, this.points.get(0).y + 40);

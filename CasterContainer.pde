@@ -1,11 +1,18 @@
 int SHADOW_DIST = 25;
-int SHADOW_AMOUNT = 13;
+int SHADOW_AMOUNT = 11;
 
 class CasterContainer {
   Caster caster;
   ArrayList<Caster> shadows;
   CasterContainer(PVector initialPosition) {
     this.caster = new Caster(initialPosition, 150, #ffffff, 1);
+    this.shadows = new ArrayList<Caster>();
+    for (int i = 0; i < SHADOW_AMOUNT; i++)
+      this.shadows.add(new Caster(new PVector(initialPosition.x, initialPosition.y)));
+  }
+
+  CasterContainer(PVector initialPosition, color backgroundCollor) {
+    this.caster = new Caster(initialPosition, backgroundCollor);
     this.shadows = new ArrayList<Caster>();
     for (int i = 0; i < SHADOW_AMOUNT; i++)
       this.shadows.add(new Caster(new PVector(initialPosition.x, initialPosition.y)));

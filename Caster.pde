@@ -3,7 +3,7 @@ import java.util.*;
 class Caster {
   PVector position;
   int radius = 10;
-  int rayCollor;
+  int rayCollor = 150;
   color rayBackGroundCollor;
   color rayThickness = 1;
 
@@ -21,23 +21,26 @@ class Caster {
     }
   }
 
+  Caster(PVector position, color rayBackGroundCollor) {
+    this.position = position;
+    this.rayCollor = 150;
+    this.rayBackGroundCollor = rayBackGroundCollor;
+  }
+
   Caster(
     PVector position,
     int rayCollor,
     color rayBackGroundCollor,
     color rayThickness
-    ) {
+  ) {
     this.position = position;
     this.rayCollor = rayCollor;
     this.rayBackGroundCollor = rayBackGroundCollor;
     this.rayThickness = rayThickness;
   }
 
-  Caster(
-    PVector position
-    ) {
+  Caster(PVector position) {
     this.position = position;
-    this.rayCollor = 150;
     this.rayBackGroundCollor = color(#454545);
   }
 
