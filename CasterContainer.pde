@@ -1,5 +1,5 @@
 int SHADOW_DIST = 25;
-int SHADOW_AMOUNT = 11;
+int SHADOW_AMOUNT = 5;
 
 class CasterContainer {
   Caster caster;
